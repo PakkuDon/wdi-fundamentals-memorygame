@@ -24,15 +24,22 @@ function createCards(board) {
 
 // Check to see if there are cards in play
 function isTwoCards() {
+  var selectedCard = this.getAttribute('data-card');
+  // Display selected card image
+  this.innerHTML = '<img src="../images/' + selectedCard + '.png"' +
+    ' alt="' + selectedCard + '"/>';
+
   // Add selected card to cards in play
-  cardsInPlay.push(this.getAttribute('data-card'));
-  
-  // If two cards in play check for a match
-  // and reset collection
-  if (cardsInPlay.length === 2) {
-    isMatch(cardsInPlay);
-    cardsInPlay = [];
-  }
+  cardsInPlay.push(selectedCard);
+
+  // If two cards in play check for a match and reset collection
+  // Delay check until DOM is updated
+  setTimeout(function() {
+    if (cardsInPlay.length === 2) {
+      isMatch(cardsInPlay);
+      cardsInPlay = [];
+    }
+  }, 10);
 }
 
 // Notify user if selected cards match
@@ -42,5 +49,11 @@ function isMatch(cardsInPlay) {
   }
   else {
     alert('Sorry, try again.');
+  }
+
+  // Clear card images
+  var cardElements = document.querySelectorAll('.card');
+  for (var i = 0; i < cardElements.length; i++) {
+    cardElements[i].innerHTML = '';
   }
 }
